@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: toolbox
+  namespace: toolbox
 spec:
   selector:
     matchLabels:
