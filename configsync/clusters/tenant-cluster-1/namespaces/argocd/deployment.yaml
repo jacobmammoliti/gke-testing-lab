@@ -15383,7 +15383,6 @@ metadata:
     app.kubernetes.io/name: argocd-application-controller
     app.kubernetes.io/part-of: argocd
   name: argocd-application-controller
-  namespace: argocd
 rules:
 - apiGroups:
   - '*'
@@ -15404,7 +15403,6 @@ metadata:
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
   name: argocd-server
-  namespace: argocd
 rules:
 - apiGroups:
   - '*'
