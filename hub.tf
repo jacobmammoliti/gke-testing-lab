@@ -26,14 +26,13 @@ module "tenant-cluster-hub" {
           https_proxy               = null
           policy_dir                = "configsync/clusters/tenant-cluster-1"
           secret_type               = "none"
-          source_format             = "hierarchy"
           sync_branch               = "main"
           sync_repo                 = "https://github.com/jacobmammoliti/gke-testing-lab"
           sync_rev                  = null
           sync_wait_secs            = null
         }
         prevent_drift = false
-        source_format = "hierarchy"
+        source_format = "unstructured" # hierarchy or unstructured
       }
       hierarchy_controller = {
         enable_hierarchical_resource_quota = true
@@ -41,7 +40,7 @@ module "tenant-cluster-hub" {
       }
       policy_controller = {
         audit_interval_seconds     = 120
-        exemptable_namespaces      = []
+        exemptable_namespaces      = ["kube-system"]
         log_denies_enabled         = true
         referential_rules_enabled  = true
         template_library_installed = true
