@@ -14,10 +14,15 @@ module "vpc" {
       }
     }
   ]
+  psa_config = {
+    ranges = { psa-range = "10.0.1.0/24" }
+    routes = null
+  }
 }
 
 module "firewall" {
-  source     = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall?ref=v21.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall?ref=v21.0.0"
+
   project_id = module.project.project_id
   network    = module.vpc.name
 

@@ -1,19 +1,24 @@
 resource "google_service_account" "bastion_service_account" {
+  count = var.provision_addons["bastion"] == true ? 1 : 0
+
   display_name = "Bastion Service Account"
   project      = module.project.project_id
   account_id   = "bastion"
 }
 
 resource "google_project_iam_member" "project" {
-  for_each = toset(local.bastion_iam)
+  for_each = { for role in local.bastion_iam : role => role if var.provision_addons["bastion"] == true }
 
   project = module.project.project_id
-  role    = each.key
-  member  = format("serviceAccount:%s", google_service_account.bastion_service_account.email)
+  role    = each.value
+  member  = format("serviceAccount:%s", google_service_account.bastion_service_account[0].email)
 }
 
-module "bastion-vm" {
-  source     = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/compute-vm?ref=v21.0.0"
+module "bastion_vm" {
+  count = var.provision_addons["bastion"] == true ? 1 : 0
+
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/compute-vm?ref=v21.0.0"
+
   project_id = module.project.project_id
   zone       = var.zone
   name       = "bastion"
@@ -31,8 +36,8 @@ module "bastion-vm" {
       curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     EOF
   }
-  instance_type          = "e2-micro"
-  service_account        = google_service_account.bastion_service_account.email
+  instance_type          = "e2-medium"
+  service_account        = google_service_account.bastion_service_account[0].email
   service_account_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   tags                   = ["bastion"]
 }

@@ -3,7 +3,8 @@ resource "random_pet" "project_name" {
 }
 
 module "project" {
-  source          = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/project?ref=v21.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/project?ref=v21.0.0"
+
   billing_account = var.billing_account
   name            = random_pet.project_name.id
   parent          = var.parent

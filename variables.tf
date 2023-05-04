@@ -3,12 +3,22 @@ variable "billing_account" {
   description = "(required) Billing account to attach to the project."
 }
 
+variable "cloud_sql_settings" {
+  type        = map(string)
+  description = "(optional) Map of CloudSQL settings."
+  default = {
+    "database_version" = "POSTGRES_13"
+    "tier"             = "db-g1-small"
+  }
+}
+
 variable "enabled_services" {
   type        = list(string)
   description = "(optional) List of service APIs to enable."
   default = [
     "container.googleapis.com",
     "stackdriver.googleapis.com",
+    "servicenetworking.googleapis.com",
     "gkehub.googleapis.com",
     "gkeconnect.googleapis.com",
     "anthosconfigmanagement.googleapis.com",
@@ -18,28 +28,20 @@ variable "enabled_services" {
   ]
 }
 
-variable "gke_disk_size_gb" {
-  type        = number
-  description = "(optional) Size of the disk to attach to each node in each GKE node pool."
-  default     = 50
-}
-
 variable "gke_enable_hub" {
   type        = bool
   description = "(optional) Register GKE cluster(s) to GKE Hub."
   default     = true
 }
 
-variable "gke_node_pool_count" {
-  type        = number
-  description = "(optional) Number of nodes to create in each GKE node pool."
-  default     = 3
-}
-
-variable "gke_node_pool_machine_type" {
-  type        = string
-  description = "(optional) Machine type to use for each node in each GKE node pool."
-  default     = "e2-medium"
+variable "gke_node_pool_settings" {
+  type        = map(any)
+  description = "(optional) Map of node pool settings."
+  default = {
+    "count"        = 3           # Number of nodes
+    "disk_size_gb" = 50          # Size of disk to attach to each node
+    "machine_type" = "e2-medium" # Instance type to use for each node
+  }
 }
 
 variable "labels" {
@@ -53,6 +55,15 @@ variable "labels" {
 variable "parent" {
   type        = string
   description = "(required) Parent folder or oranization to place the project in."
+}
+
+variable "provision_addons" {
+  type        = map(bool)
+  description = "(optional) Map of add-on services to provision."
+  default = {
+    "bastion"  = true
+    "cloudsql" = true
+  }
 }
 
 variable "region" {

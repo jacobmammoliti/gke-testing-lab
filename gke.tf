@@ -17,7 +17,8 @@ resource "random_pet" "gke_cluster_name" {
 }
 
 module "tenant-cluster" {
-  source     = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster?ref=v21.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster-standard?ref=master"
+
   project_id = module.project.project_id
   name       = format("tenant-%s", resource.random_pet.gke_cluster_name.id)
   location   = var.zone
@@ -53,17 +54,18 @@ module "tenant-cluster" {
 }
 
 module "tenant-cluster-nodepool-1" {
-  source       = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool?ref=v20.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool?ref=master"
+
   project_id   = module.project.project_id
   cluster_name = module.tenant-cluster.name
   location     = var.zone
   name         = format("%s-nodepool-1", module.tenant-cluster.name)
   node_count = {
-    initial = var.gke_node_pool_count
+    initial = var.gke_node_pool_settings["count"]
   }
   node_config = {
-    disk_size_gb                  = var.gke_disk_size_gb
-    machine_type                  = var.gke_node_pool_machine_type
+    disk_size_gb                  = var.gke_node_pool_settings["disk_size_gb"]
+    machine_type                  = var.gke_node_pool_settings["machine_type"]
     workload_metadata_config_mode = "GKE_METADATA"
     image_type                    = "COS_CONTAINERD"
     shielded_instance_config = {

@@ -20,12 +20,13 @@ Single repository to build a testing environment in Google Cloud Platform (GCP) 
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_bastion-vm"></a> [bastion-vm](#module\_bastion-vm) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/compute-vm | v21.0.0 |
+| <a name="module_bastion_vm"></a> [bastion\_vm](#module\_bastion\_vm) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/compute-vm | v21.0.0 |
 | <a name="module_firewall"></a> [firewall](#module\_firewall) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall | v21.0.0 |
 | <a name="module_project"></a> [project](#module\_project) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/project | v21.0.0 |
-| <a name="module_tenant-cluster"></a> [tenant-cluster](#module\_tenant-cluster) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster | v21.0.0 |
+| <a name="module_student_cloudsql_instance"></a> [student\_cloudsql\_instance](#module\_student\_cloudsql\_instance) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/cloudsql-instance | v21.0.0 |
+| <a name="module_tenant-cluster"></a> [tenant-cluster](#module\_tenant-cluster) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster-standard | master |
 | <a name="module_tenant-cluster-hub"></a> [tenant-cluster-hub](#module\_tenant-cluster-hub) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-hub | v21.0.0 |
-| <a name="module_tenant-cluster-nodepool-1"></a> [tenant-cluster-nodepool-1](#module\_tenant-cluster-nodepool-1) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool | v20.0.0 |
+| <a name="module_tenant-cluster-nodepool-1"></a> [tenant-cluster-nodepool-1](#module\_tenant-cluster-nodepool-1) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool | master |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc | v21.0.0 |
 
 ## Resources
@@ -39,6 +40,7 @@ Single repository to build a testing environment in Google Cloud Platform (GCP) 
 | [google_project_iam_member.project_gke](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
 | [google_service_account.bastion_service_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_service_account.gke_service_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
+| [random_pet.cloudsql_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
 | [random_pet.gke_cluster_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
 | [random_pet.project_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
 | [random_pet.router_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
@@ -48,13 +50,13 @@ Single repository to build a testing environment in Google Cloud Platform (GCP) 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_billing_account"></a> [billing\_account](#input\_billing\_account) | (required) Billing account to attach to the project. | `string` | n/a | yes |
-| <a name="input_enabled_services"></a> [enabled\_services](#input\_enabled\_services) | (optional) List of service APIs to enable. | `list(string)` | <pre>[<br>  "container.googleapis.com",<br>  "stackdriver.googleapis.com",<br>  "gkehub.googleapis.com",<br>  "gkeconnect.googleapis.com",<br>  "anthosconfigmanagement.googleapis.com",<br>  "multiclusteringress.googleapis.com",<br>  "multiclusterservicediscovery.googleapis.com",<br>  "mesh.googleapis.com"<br>]</pre> | no |
-| <a name="input_gke_disk_size_gb"></a> [gke\_disk\_size\_gb](#input\_gke\_disk\_size\_gb) | (optional) Size of the disk to attach to each node in each GKE node pool. | `number` | `50` | no |
+| <a name="input_cloud_sql_settings"></a> [cloud\_sql\_settings](#input\_cloud\_sql\_settings) | (optional) Map of CloudSQL settings. | `map(string)` | ```{ "database_version": "POSTGRES_13", "tier": "db-g1-small" }``` | no |
+| <a name="input_enabled_services"></a> [enabled\_services](#input\_enabled\_services) | (optional) List of service APIs to enable. | `list(string)` | ```[ "container.googleapis.com", "stackdriver.googleapis.com", "servicenetworking.googleapis.com", "gkehub.googleapis.com", "gkeconnect.googleapis.com", "anthosconfigmanagement.googleapis.com", "multiclusteringress.googleapis.com", "multiclusterservicediscovery.googleapis.com", "mesh.googleapis.com" ]``` | no |
 | <a name="input_gke_enable_hub"></a> [gke\_enable\_hub](#input\_gke\_enable\_hub) | (optional) Register GKE cluster(s) to GKE Hub. | `bool` | `true` | no |
-| <a name="input_gke_node_pool_count"></a> [gke\_node\_pool\_count](#input\_gke\_node\_pool\_count) | (optional) Number of nodes to create in each GKE node pool. | `number` | `3` | no |
-| <a name="input_gke_node_pool_machine_type"></a> [gke\_node\_pool\_machine\_type](#input\_gke\_node\_pool\_machine\_type) | (optional) Machine type to use for each node in each GKE node pool. | `string` | `"e2-medium"` | no |
-| <a name="input_labels"></a> [labels](#input\_labels) | (optional) Map of labels to assign to infrastructure deployed. | `map(string)` | <pre>{<br>  "environment": "tenant"<br>}</pre> | no |
+| <a name="input_gke_node_pool_settings"></a> [gke\_node\_pool\_settings](#input\_gke\_node\_pool\_settings) | (optional) Map of node pool settings. | `map(any)` | ```{ "count": 3, "disk_size_gb": 50, "machine_type": "e2-medium" }``` | no |
+| <a name="input_labels"></a> [labels](#input\_labels) | (optional) Map of labels to assign to infrastructure deployed. | `map(string)` | ```{ "environment": "tenant" }``` | no |
 | <a name="input_parent"></a> [parent](#input\_parent) | (required) Parent folder or oranization to place the project in. | `string` | n/a | yes |
+| <a name="input_provision_addons"></a> [provision\_addons](#input\_provision\_addons) | (optional) Map of add-on services to provision. | `map(bool)` | ```{ "bastion": true, "cloudsql": true }``` | no |
 | <a name="input_region"></a> [region](#input\_region) | (optional) Default GCP region to deploy to. | `string` | `"us-central1"` | no |
 | <a name="input_vpc_network_name"></a> [vpc\_network\_name](#input\_vpc\_network\_name) | (optional) Name of the VPC network to use. | `string` | `"default"` | no |
 | <a name="input_vpc_subnet_name"></a> [vpc\_subnet\_name](#input\_vpc\_subnet\_name) | (optional) Name of the VPC subnetwork to use. | `string` | `"default"` | no |
