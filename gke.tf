@@ -57,9 +57,9 @@ module "tenant_cluster_nodepool_1" {
   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool?ref=master"
 
   project_id   = module.project.project_id
-  cluster_name = module.tenant-cluster.name
+  cluster_name = module.tenant_cluster.name
   location     = var.zone
-  name         = format("%s-nodepool-1", module.tenant-cluster.name)
+  name         = format("%s-nodepool-1", module.tenant_cluster.name)
   node_count = {
     initial = var.gke_node_pool_settings["count"]
   }

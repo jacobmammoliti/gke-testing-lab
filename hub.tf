@@ -3,13 +3,13 @@ module "tenant_cluster_hub" {
   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-hub?ref=v21.0.0"
 
   depends_on = [
-    module.tenant-cluster-nodepool-1
+    module.tenant_cluster_nodepool_1
   ]
 
   project_id = module.project.project_id
 
   clusters = {
-    tenant-cluster = module.tenant-cluster.id
+    tenant-cluster = module.tenant_cluster.id
   }
 
   features = {
