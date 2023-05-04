@@ -2,7 +2,7 @@ resource "random_pet" "cloudsql_name" {
   length = 3
 }
 
-module "student_cloudsql_instance" {
+module "cloudsql_instance" {
   count = var.provision_addons["cloudsql"] == true ? 1 : 0
 
   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/cloudsql-instance?ref=v21.0.0"

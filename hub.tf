@@ -1,4 +1,4 @@
-module "tenant-cluster-hub" {
+module "tenant_cluster_hub" {
   count  = var.gke_enable_hub ? 1 : 0
   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-hub?ref=v21.0.0"
 

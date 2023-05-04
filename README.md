@@ -21,12 +21,12 @@ Single repository to build a testing environment in Google Cloud Platform (GCP) 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_bastion_vm"></a> [bastion\_vm](#module\_bastion\_vm) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/compute-vm | v21.0.0 |
+| <a name="module_cloudsql_instance"></a> [cloudsql\_instance](#module\_cloudsql\_instance) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/cloudsql-instance | v21.0.0 |
 | <a name="module_firewall"></a> [firewall](#module\_firewall) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall | v21.0.0 |
 | <a name="module_project"></a> [project](#module\_project) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/project | v21.0.0 |
-| <a name="module_student_cloudsql_instance"></a> [student\_cloudsql\_instance](#module\_student\_cloudsql\_instance) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/cloudsql-instance | v21.0.0 |
-| <a name="module_tenant-cluster"></a> [tenant-cluster](#module\_tenant-cluster) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster-standard | master |
-| <a name="module_tenant-cluster-hub"></a> [tenant-cluster-hub](#module\_tenant-cluster-hub) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-hub | v21.0.0 |
-| <a name="module_tenant-cluster-nodepool-1"></a> [tenant-cluster-nodepool-1](#module\_tenant-cluster-nodepool-1) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool | master |
+| <a name="module_tenant_cluster"></a> [tenant\_cluster](#module\_tenant\_cluster) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster-standard | master |
+| <a name="module_tenant_cluster_hub"></a> [tenant\_cluster\_hub](#module\_tenant\_cluster\_hub) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-hub | v21.0.0 |
+| <a name="module_tenant_cluster_nodepool_1"></a> [tenant\_cluster\_nodepool\_1](#module\_tenant\_cluster\_nodepool\_1) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool | master |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc | v21.0.0 |
 
 ## Resources

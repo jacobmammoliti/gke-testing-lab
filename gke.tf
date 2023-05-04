@@ -16,7 +16,7 @@ resource "random_pet" "gke_cluster_name" {
   length = 2
 }
 
-module "tenant-cluster" {
+module "tenant_cluster" {
   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster-standard?ref=master"
 
   project_id = module.project.project_id
@@ -53,7 +53,7 @@ module "tenant-cluster" {
   tags   = ["tenant"]
 }
 
-module "tenant-cluster-nodepool-1" {
+module "tenant_cluster_nodepool_1" {
   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool?ref=master"
 
   project_id   = module.project.project_id
