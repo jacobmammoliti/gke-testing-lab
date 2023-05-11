@@ -15,7 +15,7 @@ module "vpc" {
     }
   ]
   psa_config = {
-    ranges = { psa-range = "10.0.1.0/24" }
+    ranges = { psa-range = "10.1.0.0/20" } # 10.1.0.0 - 10.1.15.254
     routes = null
   }
 }
@@ -32,10 +32,11 @@ module "firewall" {
       targets     = ["bastion"]
       rules       = [{ protocol = "tcp", ports = [22] }]
     }
-    allow-ingress-istio-validation-webhook = {
-      description = "Allow Istio Pilot discovery validation webhook."
-      targets     = ["tenant"]
-      rules       = [{ protocol = "tcp", ports = [443, 10250, 15017] }]
+    allow-ingress-nginx-ingress-admission-webhook = {
+      description   = "Allow NGINX Ingress Controller webhook."
+      targets       = ["tenant"]
+      source_ranges = ["192.168.0.0/28"]
+      rules         = [{ protocol = "tcp", ports = [8443] }]
     }
   }
 }

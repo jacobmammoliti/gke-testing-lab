@@ -4,11 +4,14 @@ variable "billing_account" {
 }
 
 variable "cloud_sql_settings" {
-  type        = map(string)
+  type = object({
+    database_version = string
+    tier             = string
+  })
   description = "(optional) Map of CloudSQL settings."
   default = {
-    "database_version" = "POSTGRES_13"
-    "tier"             = "db-g1-small"
+    database_version = "POSTGRES_13"
+    tier             = "db-g1-small"
   }
 }
 
@@ -25,6 +28,7 @@ variable "enabled_services" {
     "multiclusteringress.googleapis.com",
     "multiclusterservicediscovery.googleapis.com",
     "mesh.googleapis.com",
+    "redis.googleapis.com",
   ]
 }
 
@@ -34,13 +38,19 @@ variable "gke_enable_hub" {
   default     = true
 }
 
-variable "gke_node_pool_settings" {
-  type        = map(any)
+variable "gke_settings" {
+  type = object({
+    count          = number
+    disk_size_gb   = number
+    machine_type   = string
+    master_ip_cidr = string
+  })
   description = "(optional) Map of node pool settings."
   default = {
-    "count"        = 3           # Number of nodes
-    "disk_size_gb" = 50          # Size of disk to attach to each node
-    "machine_type" = "e2-medium" # Instance type to use for each node
+    count          = 3                # Number of nodes
+    disk_size_gb   = 50               # Size of disk to attach to each node
+    machine_type   = "e2-medium"      # Instance type to use for each node
+    master_ip_cidr = "192.168.0.0/28" # CIDR range for GKE master nodes
   }
 }
 
@@ -49,6 +59,20 @@ variable "labels" {
   description = "(optional) Map of labels to assign to infrastructure deployed."
   default = {
     "environment" = "tenant"
+  }
+}
+
+variable "memorystore_settings" {
+  type = object({
+    tier    = string
+    size_gb = number
+    version = string
+  })
+  description = "(optional) Map of Memorystore settings."
+  default = {
+    tier    = "STANDARD_HA"
+    size_gb = 1
+    version = "REDIS_4_0"
   }
 }
 
@@ -61,8 +85,9 @@ variable "provision_addons" {
   type        = map(bool)
   description = "(optional) Map of add-on services to provision."
   default = {
-    "bastion"  = true
-    "cloudsql" = true
+    "bastion"     = true
+    "cloudsql"    = true
+    "memorystore" = true
   }
 }
 

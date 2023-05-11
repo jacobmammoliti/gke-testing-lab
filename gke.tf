@@ -32,7 +32,7 @@ module "tenant_cluster" {
     master_authorized_ranges = {
       internal-vms = "10.0.0.0/8"
     }
-    master_ipv4_cidr_block = "192.168.0.0/28"
+    master_ipv4_cidr_block = var.gke_settings["master_ip_cidr"]
   }
 
   enable_features = {
@@ -61,11 +61,11 @@ module "tenant_cluster_nodepool_1" {
   location     = var.zone
   name         = format("%s-nodepool-1", module.tenant_cluster.name)
   node_count = {
-    initial = var.gke_node_pool_settings["count"]
+    initial = var.gke_settings["count"]
   }
   node_config = {
-    disk_size_gb                  = var.gke_node_pool_settings["disk_size_gb"]
-    machine_type                  = var.gke_node_pool_settings["machine_type"]
+    disk_size_gb                  = var.gke_settings["disk_size_gb"]
+    machine_type                  = var.gke_settings["machine_type"]
     workload_metadata_config_mode = "GKE_METADATA"
     image_type                    = "COS_CONTAINERD"
     shielded_instance_config = {
@@ -85,4 +85,5 @@ module "tenant_cluster_nodepool_1" {
       "https://www.googleapis.com/auth/cloud-platform"
     ]
   }
+  tags = ["tenant"]
 }
