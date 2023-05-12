@@ -35,7 +35,7 @@ module "firewall" {
     allow-ingress-nginx-ingress-admission-webhook = {
       description   = "Allow NGINX Ingress Controller webhook."
       targets       = ["tenant"]
-      source_ranges = ["192.168.0.0/28"]
+      source_ranges = [var.gke_settings["master_ip_cidr"]]
       rules         = [{ protocol = "tcp", ports = [8443] }]
     }
   }

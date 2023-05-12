@@ -35,6 +35,11 @@ module "tenant_cluster" {
     master_ipv4_cidr_block = var.gke_settings["master_ip_cidr"]
   }
 
+  enable_addons = {
+    config_connector               = true
+    gce_persistent_disk_csi_driver = true
+  }
+
   enable_features = {
     shielded_nodes    = true
     dataplane_v2      = true
