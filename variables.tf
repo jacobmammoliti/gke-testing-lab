@@ -15,6 +15,12 @@ variable "cloud_sql_settings" {
   }
 }
 
+variable "domain" {
+  type        = string
+  description = "(optional) Domain to use for DNS zone."
+  default     = null
+}
+
 variable "enabled_services" {
   type        = list(string)
   description = "(optional) List of service APIs to enable."
@@ -24,6 +30,7 @@ variable "enabled_services" {
     "servicenetworking.googleapis.com",
     "gkehub.googleapis.com",
     "gkeconnect.googleapis.com",
+    "gkebackup.googleapis.com",
     "anthosconfigmanagement.googleapis.com",
     "multiclusteringress.googleapis.com",
     "multiclusterservicediscovery.googleapis.com",
@@ -44,13 +51,17 @@ variable "gke_settings" {
     disk_size_gb   = number
     machine_type   = string
     master_ip_cidr = string
+    spot           = bool
+    preemptible    = bool
   })
   description = "(optional) Map of node pool settings."
   default = {
     count          = 3                # Number of nodes
-    disk_size_gb   = 50               # Size of disk to attach to each node
-    machine_type   = "e2-medium"      # Instance type to use for each node
+    disk_size_gb   = 10               # Size of disk to attach to each node
+    machine_type   = "e2-highcpu-4"   # Instance type to use for each node
     master_ip_cidr = "192.168.0.0/28" # CIDR range for GKE master nodes
+    spot           = true             # Lower cost VMs built for fault-tolerant workloads
+    preemptible    = true             # Mark the node as premmptible
   }
 }
 

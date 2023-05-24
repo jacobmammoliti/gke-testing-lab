@@ -38,5 +38,19 @@ module "firewall" {
       source_ranges = [var.gke_settings["master_ip_cidr"]]
       rules         = [{ protocol = "tcp", ports = [8443] }]
     }
+    allow-ingress-https = {
+      description   = "Allow HTTPS Ingress from control plane nodes."
+      targets       = ["tenant"]
+      source_ranges = [var.gke_settings["master_ip_cidr"]]
+      rules         = [{ protocol = "tcp", ports = [443] }]
+    }
+  }
+}
+
+module "ingress_address" {
+  source     = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-address?ref=v21.0.0"
+  project_id = module.project.project_id
+  external_addresses = {
+    wildcard = var.region
   }
 }

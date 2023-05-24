@@ -35,6 +35,12 @@ module "tenant_cluster" {
     master_ipv4_cidr_block = var.gke_settings["master_ip_cidr"]
   }
 
+  min_master_version = "1.25.9-gke.400"
+
+  # backup_configs = {
+  #   enable_backup_agent = true
+  # }
+
   enable_addons = {
     config_connector               = true
     gce_persistent_disk_csi_driver = true
@@ -65,6 +71,9 @@ module "tenant_cluster_nodepool_1" {
   cluster_name = module.tenant_cluster.name
   location     = var.zone
   name         = format("%s-nodepool-1", module.tenant_cluster.name)
+
+  gke_version = "1.25.9-gke.400"
+
   node_count = {
     initial = var.gke_settings["count"]
   }
@@ -76,6 +85,7 @@ module "tenant_cluster_nodepool_1" {
     shielded_instance_config = {
       enable_secure_boot = true
     }
+    spot = var.gke_settings["spot"]
   }
   nodepool_config = {
     management = {
