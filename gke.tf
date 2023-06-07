@@ -35,11 +35,11 @@ module "tenant_cluster" {
     master_ipv4_cidr_block = var.gke_settings["master_ip_cidr"]
   }
 
-  min_master_version = "1.25.9-gke.400"
+  min_master_version = var.gke_settings["version"]
 
-  # backup_configs = {
-  #   enable_backup_agent = true
-  # }
+  backup_configs = {
+    enable_backup_agent = true
+  }
 
   enable_addons = {
     config_connector               = true
@@ -55,7 +55,7 @@ module "tenant_cluster" {
 
   release_channel = "RAPID"
 
-  private_cluster_config = {
+  private_cluster_config = var.gke_settings["private"] == false ? null : {
     enable_private_endpoint = true
     master_global_access    = false
   }
@@ -71,12 +71,12 @@ module "tenant_cluster_nodepool_1" {
   cluster_name = module.tenant_cluster.name
   location     = var.zone
   name         = format("%s-nodepool-1", module.tenant_cluster.name)
-
-  gke_version = "1.25.9-gke.400"
+  gke_version  = var.gke_settings["version"]
 
   node_count = {
     initial = var.gke_settings["count"]
   }
+
   node_config = {
     disk_size_gb                  = var.gke_settings["disk_size_gb"]
     machine_type                  = var.gke_settings["machine_type"]
@@ -87,12 +87,14 @@ module "tenant_cluster_nodepool_1" {
     }
     spot = var.gke_settings["spot"]
   }
+
   nodepool_config = {
     management = {
       auto_repair  = true
       auto_upgrade = true
     }
   }
+
   service_account = {
     create = false
     email  = google_service_account.gke_service_account.email
@@ -100,5 +102,6 @@ module "tenant_cluster_nodepool_1" {
       "https://www.googleapis.com/auth/cloud-platform"
     ]
   }
+
   tags = ["tenant"]
 }

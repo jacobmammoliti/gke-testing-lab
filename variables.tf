@@ -53,15 +53,19 @@ variable "gke_settings" {
     master_ip_cidr = string
     spot           = bool
     preemptible    = bool
+    private        = bool
+    version        = string
   })
   description = "(optional) Map of node pool settings."
   default = {
-    count          = 3                # Number of nodes
-    disk_size_gb   = 10               # Size of disk to attach to each node
-    machine_type   = "e2-highcpu-4"   # Instance type to use for each node
-    master_ip_cidr = "192.168.0.0/28" # CIDR range for GKE master nodes
-    spot           = true             # Lower cost VMs built for fault-tolerant workloads
-    preemptible    = true             # Mark the node as premmptible
+    count          = 3                 # Number of nodes
+    disk_size_gb   = 10                # Size of disk to attach to each node
+    machine_type   = "e2-highcpu-4"    # Instance type to use for each node
+    master_ip_cidr = "192.168.0.0/28"  # CIDR range for GKE master nodes
+    spot           = true              # Lower cost VMs built for fault-tolerant workloads
+    preemptible    = true              # Mark the node as premmptible
+    private        = false             # Whether nodes have internal IP addresses only
+    version        = "1.26.3-gke.1000" # GKE version to use for master and worker nodes
   }
 }
 
@@ -96,9 +100,9 @@ variable "provision_addons" {
   type        = map(bool)
   description = "(optional) Map of add-on services to provision."
   default = {
-    "bastion"     = true
-    "cloudsql"    = true
-    "memorystore" = true
+    "bastion"     = false
+    "cloudsql"    = false
+    "memorystore" = false
   }
 }
 
