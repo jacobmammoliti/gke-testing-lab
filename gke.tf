@@ -17,7 +17,7 @@ resource "random_pet" "gke_cluster_name" {
 }
 
 module "tenant_cluster" {
-  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster-standard?ref=master"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-cluster-standard?ref=v24.0.0"
 
   project_id = module.project.project_id
   name       = format("tenant-%s", resource.random_pet.gke_cluster_name.id)
@@ -53,7 +53,7 @@ module "tenant_cluster" {
     workload_identity = true
   }
 
-  release_channel = "RAPID"
+  release_channel = var.gke_settings["release_channel"]
 
   private_cluster_config = var.gke_settings["private"] == false ? null : {
     enable_private_endpoint = true
@@ -65,7 +65,7 @@ module "tenant_cluster" {
 }
 
 module "tenant_cluster_nodepool_1" {
-  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool?ref=master"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-nodepool?ref=v24.0.0"
 
   project_id   = module.project.project_id
   cluster_name = module.tenant_cluster.name

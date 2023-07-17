@@ -17,7 +17,7 @@ resource "google_project_iam_member" "project" {
 module "bastion_vm" {
   count = var.provision_addons["bastion"] == true ? 1 : 0
 
-  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/compute-vm?ref=v21.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/compute-vm?ref=v24.0.0"
 
   project_id = module.project.project_id
   zone       = var.zone

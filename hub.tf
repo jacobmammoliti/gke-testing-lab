@@ -1,6 +1,6 @@
 module "tenant_cluster_hub" {
   count  = var.gke_enable_hub ? 1 : 0
-  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-hub?ref=v21.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/gke-hub?ref=v24.0.0"
 
   depends_on = [
     module.tenant_cluster_nodepool_1
@@ -45,7 +45,7 @@ module "tenant_cluster_hub" {
         referential_rules_enabled  = true
         template_library_installed = true
       }
-      version = "1.14.3"
+      version = "1.15.2"
     }
   }
   configmanagement_clusters = {

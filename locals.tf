@@ -3,5 +3,6 @@ locals {
   bastion_iam = [
     "roles/container.clusterViewer",
     "roles/container.admin",
+    "roles/gkehub.admin"
   ]
 }

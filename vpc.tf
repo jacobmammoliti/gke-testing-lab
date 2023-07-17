@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc?ref=v21.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc?ref=v24.0.0"
 
   project_id = module.project.project_id
   name       = var.vpc_network_name
@@ -21,7 +21,7 @@ module "vpc" {
 }
 
 module "firewall" {
-  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall?ref=v21.0.0"
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-vpc-firewall?ref=v24.0.0"
 
   project_id = module.project.project_id
   network    = module.vpc.name
@@ -48,7 +48,7 @@ module "firewall" {
 }
 
 module "ingress_address" {
-  source     = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-address?ref=v21.0.0"
+  source     = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-address?ref=v24.0.0"
   project_id = module.project.project_id
   external_addresses = {
     wildcard = var.region
